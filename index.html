@@ -18,24 +18,40 @@
             padding: 0; 
             box-sizing: border-box; 
             user-select: none;
-        }
-        body{ 
-            background: #838383;
+            font-family: monospace;
+        }body{ 
+            background: #000000;
             width: 100%; 
             min-height: 100vh; 
-            padding: 50px 10px;
+            padding: 30px 10px;
+        }body div{ 
+            margin: 50px 0; 
+            border-color: #ffffff;
+            border-style: ridge;
+            border-width: 2px;
+            color: #ffd900;
+        }
+
+        #time{
+            text-align: center;
+            padding: 10px 0;
+        }#time h3{ font-size: xx-large; }
+        #time h4{ font-size: large; }
+        #time h5{ 
+            color: #00ff88; 
+            font-size: x-large;
+            padding: 10px 0;
         }
 
         #ttd{
             width: 100%; 
-            /* height: 240px;
-            overflow-y: scroll; */
         }#ttd h4{
+            border: 1px solid #ffd900;
             color: #ffd900;
-            width: 100%;
+            width: 90%;
             height: 60px;
-            padding: 10px;
-            margin: 20px 0;
+            padding: 20px;
+            margin: 20px auto;
             text-align: center;
         }.over{
             background: #680000;
@@ -46,21 +62,17 @@
         }
         
         .img{
-            margin-top: 50px;
             width: 100%; 
         }.img img{ 
-            display: block;
+            display: none;
             width: 100%; 
-            border: 5px solid #000;
             transition: 1000ms;
         }.img h3{
             display: block;
-            width: 100%;
-            padding: 10px 0;
+            padding: 5px;
             text-align: center;
-            background: #000;
+            background: #272727;
             color: #ffd900;
-            font-family: monospace;
             cursor: pointer;
         }
         
@@ -69,6 +81,7 @@
 </head>
 <body>
 
+    <div id="time"></div>
     <div id="ttd"></div>
     <div class="img">
         <img src="time_table.png" alt="S7 Time Table">
@@ -76,24 +89,51 @@
     </div>
 
     <script>
-        let d = new Date();
-        console.log(d.getHours(), d.getMinutes())
+        // now time display
+        let P = 0;
+        const TD = document.getElementById('time');
+        const DTN = () => {
+            let T = new Date();
+            let TSA = T.toDateString().split(' ');
+            let H = T.getHours();
+            let M = T.getMinutes();
+            let S = T.getSeconds();
+            if ((H <= 8) && (M <= 30)) P = 0;
+            if (((H >= 8) && (M >= 30)) && ((H <= 9) && (M <= 10))) P = 1;
+            if (((H >= 9) && (M >= 30)) && ((H <= 10) && (M <= 10))) P = 2;
+            if (((H >= 10) && (M >= 30)) && ((H <= 11) && (M <= 10))) P = 3;
+            if (((H >= 11) && (M >= 40)) && ((H <= 12) && (M <= 20))) P = 4;
+            if (((H >= 12) && (M >= 40)) && ((H <= 13) && (M <= 20))) P = 5;
+            if ((H >= 13) && (M >= 20)) P = 0;
+            (P === 0) ? (PT = 'FREE TIME') : (PT = `PERIOD: ${P}`);
+            TD.innerHTML = `<h3>${H} : ${M} : ${S}</h3>
+            <h4>${TSA[0]} ${TSA[1]} ${TSA[2]} ${TSA[3]}</h4>
+            <h5>${PT}</h5>`;
+        };
         // tt displayer
         const TTD = document.getElementById('ttd');
         const DJTT = (TT) => {
-            let TTT = TT[(((new Date()).toDateString().split(' ')[0]).toString())];
+            let D = (((new Date()).toDateString().split(' ')[0]).toString());
+            let TTT = TT[D];
+            // console.log(TTT)
+            TTD.innerText = '';
             for (let i = 1; i <= 5; i ++){
                 let h4 = document.createElement('h4');
+                if (P > 0){
+                    if (P < i) h4.classList.add('next');
+                    if (P === i) h4.classList.add('now');
+                    if (P > i) h4.classList.add('over');
+                };
                 h4.innerText = TTT[(i.toString())];
                 TTD.appendChild(h4);
             };
         };
         // tt trigger
         const SFTT = (trigger) => {
-            if (trigger.parentElement.querySelector('img').style.display === 'none'){
-                trigger.parentElement.querySelector('img').style.display = 'block';
-            } else {
+            if (trigger.parentElement.querySelector('img').style.display == 'block'){
                 trigger.parentElement.querySelector('img').style.display = 'none';
+            } else {
+                trigger.parentElement.querySelector('img').style.display = 'block';
             };
         };
         // onload
@@ -106,7 +146,8 @@
             fetch('time_table.json')
                 .then(r => {
                     r.json().then(j => {
-                        // console.log(j);
+                        // console.log(j)
+                        setInterval(DTN, 1000);
                         setInterval(DJTT(j), 60*1000);
                     }).catch(e => {
                         console.log(e);

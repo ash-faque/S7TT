@@ -1,12 +1,11 @@
 // Cache names
-const dynamicCacheName = 'DYNAMIC_V0';
-const preCacheName = 'PRE_V2';
+const preCacheName = 'PRE_V1';
 // Cache assets
 const preCacheAssets = [
 							'/',
-							'index.html',
-							'time_table.png',
-							'time_table.json'
+							'/index.html',
+							'/time_table.png',
+							'/time_table.json'
 						];
 
 
@@ -40,7 +39,7 @@ self.addEventListener('activate', evt => {
 		// Delete old caches versions
 		caches.keys().then(keys => {
 			return Promise.all(keys
-				.filter(key => (key !== dynamicCacheName) && (key !== preCacheName))
+				.filter(key => (key !== preCacheName))
 				.map(key => caches.delete(key))
 			);
 		})
@@ -50,32 +49,17 @@ self.addEventListener('activate', evt => {
 
 // fetch events
 self.addEventListener('fetch', evt => {
-	// console.log(evt.request)
-	if (evt.request.mode === "navigate") {
-		evt.respondWith(
-			(async () => {
-				try {
-					const networkResponse = await fetch(evt.request);
-					return networkResponse;
-				} catch (error) {
-					console.log("Fetch failed;", error);
-					const cache = await caches.open(preCacheName);
-					const cachedResponse = await cache.match(evt.request.url);
-					return cachedResponse;
-				}
-			})()
-		);
-	};
-	// if (evt.request.url.indexOf('firestore.googleapis.com') === -1){
-	// 	caches.match(evt.request).then(cacheRes => {
-	// 		return cacheRes || fetch(evt.request).then(fetchRes => {
-	// 			return caches.open(dynamicCacheName).then(cache => {
-	// 			  cache.put(evt.request.url, fetchRes.clone());
-	// 			  // check cached items size
-	// 			  limitCacheSize(dynamicCacheName, 10);
-	// 			  return fetchRes;
-	// 			});
-	// 		});
-	// 	});
-	// };
+	evt.respondWith(
+		(async () => {
+			try {
+				const networkResponse = await fetch(evt.request);
+				return networkResponse;
+			} catch (error) {
+				console.log("Fetch failed;", error);
+				const cache = await caches.open(preCacheName);
+				const cachedResponse = await cache.match(evt.request);
+				return cachedResponse;
+			};
+		})()
+	);
 });
