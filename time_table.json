@@ -1,0 +1,37 @@
+{
+    "Mon": {
+        "1": "Machine Design",
+        "2": "CFF",
+        "3": "AEE",
+        "4": "Automobile",
+        "5": "RAC"
+    },
+    "Tue": {
+        "1": "CFF",
+        "2": "Machine Design",
+        "3": "Mechatronics",
+        "4": "Automobile",
+        "5": "Seminar"
+    },
+    "Wed": {
+        "1": "Machine Design",
+        "2": "RAC",
+        "3": "AEE",
+        "4": "Automobile",
+        "5": "Seminar"
+    },
+    "Thu": {
+        "1": "RAC",
+        "2": "Seminar",
+        "3": "Mechatronics",
+        "4": "Automobile",
+        "5": "AEE"
+    },
+    "Fri": {
+        "1": "Mechatronics",
+        "2": "RAC",
+        "3": "CFF",
+        "4": "Machine Design",
+        "5": "AEE"
+    }
+}

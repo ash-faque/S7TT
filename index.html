@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="S7 ME GECW TIME TABLE">
+    <title>S7 TT</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/img/180.png">
+    <meta name="apple-mobile-web-app-status-bar" content="#FFE1C4">
+    <meta name="theme-color" content="#FFE1C4">
+    <style>
+
+        *{ 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            user-select: none;
+        }
+        body{ 
+            background: #838383;
+            width: 100%; 
+            min-height: 100vh; 
+            padding: 50px 10px;
+        }
+
+        #ttd{
+            width: 100%; 
+            /* height: 240px;
+            overflow-y: scroll; */
+        }#ttd h4{
+            color: #ffd900;
+            width: 100%;
+            height: 60px;
+            padding: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }.over{
+            background: #680000;
+        }.now{
+            background: #008371;
+        }.next{
+            background: #058800;
+        }
+        
+        .img{
+            margin-top: 50px;
+            width: 100%; 
+        }.img img{ 
+            display: block;
+            width: 100%; 
+            border: 5px solid #000;
+            transition: 1000ms;
+        }.img h3{
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            background: #000;
+            color: #ffd900;
+            font-family: monospace;
+            cursor: pointer;
+        }
+        
+
+    </style>
+</head>
+<body>
+
+    <div id="ttd"></div>
+    <div class="img">
+        <img src="time_table.png" alt="S7 Time Table">
+        <h3 onclick="SFTT(this)">TOGGLE FULL TIME TABLE</h3>
+    </div>
+
+    <script>
+        let d = new Date();
+        console.log(d.getHours(), d.getMinutes())
+        // tt displayer
+        const TTD = document.getElementById('ttd');
+        const DJTT = (TT) => {
+            let TTT = TT[(((new Date()).toDateString().split(' ')[0]).toString())];
+            for (let i = 1; i <= 5; i ++){
+                let h4 = document.createElement('h4');
+                h4.innerText = TTT[(i.toString())];
+                TTD.appendChild(h4);
+            };
+        };
+        // tt trigger
+        const SFTT = (trigger) => {
+            if (trigger.parentElement.querySelector('img').style.display === 'none'){
+                trigger.parentElement.querySelector('img').style.display = 'block';
+            } else {
+                trigger.parentElement.querySelector('img').style.display = 'none';
+            };
+        };
+        // onload
+        window.onload = () => {
+            if('serviceWorker' in navigator){
+            navigator.serviceWorker.register('sw.js')
+                        .then(reg => console.log('⚙ Service worker registered'))
+                        .catch(err => console.log('⚙ Service worker not registered', err));
+            };
+            fetch('time_table.json')
+                .then(r => {
+                    r.json().then(j => {
+                        // console.log(j);
+                        setInterval(DJTT(j), 60*1000);
+                    }).catch(e => {
+                        console.log(e);
+                    });
+                }).catch(e => {
+                    console.log(e);
+                });
+        };
+    </script>
+
+</html>
