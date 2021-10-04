@@ -1,13 +1,13 @@
 {
-    "theme_color": "#ffae00",
+    "theme_color": "#ff5e00",
     "background_color": "#000000",
     "display": "standalone",
     "orientation": "portrait-primary",
     "scope": "/",
     "start_url": "/",
-    "name": "S7 Time Table",
+    "name": "GECW S7 ME TT",
     "short_name": "S7 TT",
-    "description": "S7 ME GECW TIME TABLE",
+    "description": "GECW S7 ME GECW TIME TABLE",
     "icons": [
         {
             "src": "192.png",
