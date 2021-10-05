@@ -1,9 +1,13 @@
 // Cache names
-const preCacheName = 'PRE_V10';
+const preCacheName = 'PRE_V5';
 // Cache assets
 const preCacheAssets = [
 							'/',
 							'/index.html',
+							'/favicon.ico',
+							'/192.png',
+							'/styles.css',
+							'/app.js',
 							'/time_table.png',
 							'/time_table.json'
 						];
@@ -51,14 +55,17 @@ self.addEventListener('activate', evt => {
 self.addEventListener('fetch', evt => {
 	evt.respondWith(
 		(async () => {
-			try {
-				const networkResponse = await fetch(evt.request);
-				return networkResponse;
-			} catch (error) {
-				console.log("Fetch failed;", error);
-				const cache = await caches.open(preCacheName);
-				const cachedResponse = await cache.match(evt.request);
+			const cache = await caches.open(preCacheName);
+			const cachedResponse = await cache.match(evt.request);
+			if (cachedResponse){
 				return cachedResponse;
+			} else {
+				try {
+					const networkResponse = await fetch(evt.request);
+					return networkResponse;
+				} catch (error) {
+					console.log("Fetch failed;", error);
+				};
 			};
 		})()
 	);
