@@ -133,7 +133,6 @@
 
 #twtt{
     background: transparent;
-    border: 0;
     height: 100vw;
     overflow-x: scroll;
 }table{
@@ -141,24 +140,31 @@
     margin: 0;
     font-family: arial, sans-serif;
     border-collapse: collapse;
+}tr:nth-child(1){
+    background: #101010;
+}tr:nth-child(2){
+    background: #181818;
+}tr:nth-child(3){
+    background: #262626;
+}tr:nth-child(4){
+    background: #343434;
+}tr:nth-child(5){
+    background: #424242;
+}tr:nth-child(6){
+    background: #505050;
 }td, th {
-    border: 0.5px solid #ffae00;
-    color: #fff;
+    border: 1px solid #ffae00;
+    text-shadow: -2px 1px #000000;
     letter-spacing: 5px;
     text-align: center;
     height: calc((100vw - 20px) / 6);
     padding: 0 20px;
 }th{
-    background-color: #1d1d1d;
+    color: #ffae00;
+    background-color: #1a1a1a;
     padding: 0 50px;
     font-size: large;
-}
-td{
-    text-shadow: -2px 1px #000000;
-    color: #46c7ff;
+}td{
+    color: whitesmoke;
     font-size: larger;
-}td:nth-child(even){
-    background-color: #2e2f5a;
-}td:nth-child(odd){
-    background-color: #2d385e;
 }

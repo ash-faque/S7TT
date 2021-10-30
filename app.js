@@ -187,6 +187,8 @@ const fetchTT = () => {
                 }, (10 * 1000));
             }).catch(e => {
                 console.log(e);
+                TTD.innerHTML += `<div style="padding: 20px; text-align: center; border: 0;">
+                                  <p>🥴${e}</p>------<p>💃 It's probably Saturday or Sunday.</p></div>`;
             });
         }).catch(e => {
             console.log(e);
