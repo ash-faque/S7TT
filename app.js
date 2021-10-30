@@ -87,28 +87,33 @@ const UT = () => {
     let H = T.getHours();
     let M = T.getMinutes();
     let S = T.getSeconds();
-    // H = 9; M = 40;
-    if (H === 8){
+    if (H === 9){
         if (M >= 30) P = 1;
     };
-    if (H === 9){
-        if (M <= 10) P = 1;
+    if (H === 10){
+        if (M < 30) P = 1;
         if (M >= 30) P = 2;
     };
-    if (H === 10){
-        if (M <= 10) P = 2;
+    if (H === 11){
+        if (M < 30) P = 2;
         if (M >= 30) P = 3;
     };
-    if (H === 11){
-        if (M <= 10) P = 3;
-        if (M >= 40) P = 4;
-    };
     if (H === 12){
-        if (M <= 20) P = 4;
-        if (M >= 40) P = 5;
+        if (M < 30) P = 3;
     };
     if (H === 13){
-        if (M <= 20) P = 5;
+        if (M >= 30) P = 4;
+    };
+    if (H === 14){
+        if (M < 30) P = 4;
+        if (M >= 30) P = 5;
+    };
+    if (H === 15){
+        if (M < 30) P = 5;
+        if (M >= 30) P = 6;
+    };
+    if (H === 16){
+        if (M < 30) P = 6;
     };
     // console.log(P);
     P === 0 ? (PT = 'FREE TIME') : (PT = `PERIOD: ${P}`);
@@ -122,8 +127,8 @@ const DJTT = (TT) => {
     setInterval(UT, 1000);
     let D = (((new Date()).toDateString().split(' ')[0]).toString());
     let TTT = TT[D];
-    TTD.innerText = '';
-    for (let i = 1; i <= 5; i ++){
+    TTD.innerHTML = '<h3>TODAY</h3>';
+    for (let i = 1; i <= 6; i ++){
         let h4 = document.createElement('h4');
         if (P > 0){
             if (P > i) h4.classList.add('over');
@@ -138,13 +143,36 @@ const DJTT = (TT) => {
 };
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
-// tt trigger
-const SFTT = (trigger) => {
-    if (trigger.parentElement.querySelector('img').style.display == 'block'){
-        trigger.parentElement.querySelector('img').style.display = 'none';
-    } else {
-        trigger.parentElement.querySelector('img').style.display = 'block';
-    };
+// this weeks time table
+const twtt = document.getElementById('twtt');
+const TWTT = (TT) => {
+    let days = Object.keys(TT);
+    let table = document.createElement('table');
+    let content = `<thead>
+                        <tr>
+                            <th></th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                            <th>6</th>
+                        </tr>
+                    </thead>`;
+    days.forEach(day => {
+        let tdtt = TT[day];
+        content += `<tr>
+                        <th>${day}</th>
+                        <td>${tdtt[1]}</td>
+                        <td>${tdtt[2]}</td>
+                        <td>${tdtt[3]}</td>
+                        <td>${tdtt[4]}</td>
+                        <td>${tdtt[5]}</td>
+                        <td>${tdtt[6]}</td>
+                    </tr>`;
+        table.innerHTML = content;
+    })
+    twtt.appendChild(table);
 };
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
@@ -152,6 +180,7 @@ const fetchTT = () => {
     fetch('time_table.json')
         .then(r => {
             r.json().then(j => {
+                TWTT(j);
                 DJTT(j);
                 setInterval(() => {
                     DJTT(j)

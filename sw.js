@@ -1,5 +1,5 @@
 // Cache names
-const preCacheName = 'PRE_V5';
+const preCacheName = 'PRE_V6';
 // Cache assets
 const preCacheAssets = [
 							'/',
@@ -8,7 +8,6 @@ const preCacheAssets = [
 							'/192.png',
 							'/styles.css',
 							'/app.js',
-							'/time_table.png',
 							'/time_table.json'
 						];
 
